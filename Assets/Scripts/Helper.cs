@@ -1,19 +1,23 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Helper
+namespace Portfolio.Match3.Helpers
 {
-    /// <summary>
-    /// Randomly shuffles the items in a list.
-    /// </summary>
-    public static void ShuffleList<T>(List<T> list)
+    public class Helper
     {
-        for (var i = 0; i < list.Count; i++)
+        /// <summary>
+        /// Randomly shuffles the items in a list.
+        /// </summary>
+        public static void ShuffleList<T>(List<T> list)
         {
-            var randIndex = Random.Range(i, list.Count);
-            T temp = list[i];
-            list[i] = list[randIndex];
-            list[randIndex] = temp;
+            for (var i = 0; i < list.Count; i++)
+            {
+                var randIndex = Random.Range(i, list.Count);
+                T temp = list[i];
+                list[i] = list[randIndex];
+                list[randIndex] = temp;
+            }
         }
     }
+
 }

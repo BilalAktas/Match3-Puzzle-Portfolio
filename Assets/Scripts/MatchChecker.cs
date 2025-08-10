@@ -1,9 +1,9 @@
-using System;
 using System.Collections;
 using UnityEngine;
-using UnityEngine.UI;
-using Grid = Portfolio.Match3.Core.Grid;
 
+namespace Portfolio.Match3.Core
+{
+    
 /// <summary>
 /// Checks the grid for matches and valid moves, triggers reshuffle if none found.
 /// </summary>
@@ -41,10 +41,7 @@ public class MatchChecker : MonoBehaviour
             {
                 yield return new WaitForSeconds(1f);
                 
-                if(_defaultMatchCheckCO!=null)
-                    StopCoroutine(_defaultMatchCheckCO);
-
-                _defaultMatchCheckCO = StartCoroutine(DefaultMatchCheck());
+               DefaultMatchCheckStart();
             }
         }
 
@@ -112,4 +109,5 @@ public class MatchChecker : MonoBehaviour
 
         return false;
     }
+}
 }

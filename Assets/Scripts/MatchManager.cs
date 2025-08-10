@@ -3,6 +3,9 @@ using System.Linq;
 using UnityEngine;
 using Grid = Portfolio.Match3.Core.Grid;
 
+namespace Portfolio.Match3.Core
+{
+    
 /// <summary>
 /// Manages matching candies in the grid and handles match effects.
 /// </summary>
@@ -114,4 +117,5 @@ public class MatchManager : MonoBehaviour
         matchedNodes.Clear();
         return false;
     }
+}
 }
