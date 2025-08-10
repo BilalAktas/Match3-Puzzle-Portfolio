@@ -23,6 +23,10 @@ namespace Portfolio.Match3.Core
 
         private void Update()
         {
+            if (GameManager.Instance.CurrentGameState == GameState.Idle)
+                return;
+            
+            
             GetPlayerInput();
         }
 
@@ -33,7 +37,7 @@ namespace Portfolio.Match3.Core
         {
             if (Input.touchCount <= 0)
                 return;
-
+            
             var _touch = Input.GetTouch(0);
             switch (_touch.phase)
             {
