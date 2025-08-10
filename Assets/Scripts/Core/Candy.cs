@@ -67,7 +67,8 @@ namespace Portfolio.Match3.Core
         public void Matched()
         {
             CurrentNode.SetCandy(null, false);
-            gameObject.SetActive(false);
+            //gameObject.SetActive(false);
+            ObjectPool.Instance.Deposit(gameObject, "Candy");
         }
     }
 }

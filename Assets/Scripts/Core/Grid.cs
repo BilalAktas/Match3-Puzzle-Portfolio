@@ -58,10 +58,12 @@ namespace Portfolio.Match3.Core
                 for (var y = 0; y < _gridSize.y; y++)
                 {
                     var worldPosition = bottomLeft + new Vector2(x * _nodeSize.x, y * _nodeSize.y);
-                    var clone = Instantiate(_nodePrefab);
+                    var clone = ObjectPool.Instance.GetFromPool("Node");
+                    clone.SetActive(true);
                     clone.transform.position = worldPosition;
 
-                    var candyClone = Instantiate(_candyPrefab);
+                    var candyClone = ObjectPool.Instance.GetFromPool("Candy");
+                    candyClone.SetActive(true);
                     candyClone.transform.position = worldPosition;
 
 
@@ -243,8 +245,9 @@ namespace Portfolio.Match3.Core
         /// </summary>
         private void FillInstantiateCandy(Node _node)
         {
-            var _candyClone = Instantiate(_candyPrefab).GetComponent<Candy>();
-            _candyClone.transform.name = "INSTANTIATE";
+            var _candyClone = ObjectPool.Instance.GetFromPool("Candy").GetComponent<Candy>();
+            _candyClone.gameObject.SetActive(true);
+            //_candyClone.transform.name = "INSTANTIATE";
             _candyClone.transform.position = new Vector3(_node.WorldPosition.x, 8);
             _candyClone.Init(SelectCandyProperties(new Vector2Int(_node.GridPosition.x, _node.GridPosition.y)), _node);
             _node.SetCandy(_candyClone, true);

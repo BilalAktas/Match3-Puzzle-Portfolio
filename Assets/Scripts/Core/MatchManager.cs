@@ -94,8 +94,9 @@ namespace Portfolio.Match3.Core
 
                         _matchSound.Play();
 
-                        var particleClone = Instantiate(_explosionParticlePrefab);
+                        var particleClone = ObjectPool.Instance.GetFromPool("ExplosionParticle");
                         particleClone.transform.position = node.WorldPosition;
+                        particleClone.SetActive(true);
                         foreach (var particleSystem in particleClone.GetComponentsInChildren<ParticleSystem>())
                         {
                             var main = particleSystem.main;
