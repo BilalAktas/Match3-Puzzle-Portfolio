@@ -2,7 +2,6 @@ using UnityEngine;
 
 namespace Portfolio.Match3.Helpers
 {
-    
     /// <summary>
     /// Adjusts the camera's orthographic size to fit the target resolution aspect ratio.
     /// </summary>
@@ -17,8 +16,8 @@ namespace Portfolio.Match3.Helpers
         private void AdjustCameraSize()
         {
             var orthographicCamera = GetComponent<Camera>();
-        
- 
+
+
             var screenAspect = (float)Screen.width / Screen.height;
             var targetAspect = _TARGET_WIDTH / _TARGET_HEIGHT;
 
@@ -33,4 +32,3 @@ namespace Portfolio.Match3.Helpers
         }
     }
 }
-

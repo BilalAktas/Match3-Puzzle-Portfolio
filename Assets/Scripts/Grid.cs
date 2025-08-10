@@ -178,7 +178,8 @@ namespace Portfolio.Match3.Core
         /// <summary>
         /// Checks if a position is inside the grid boundaries.
         /// </summary>
-        public bool IsNodeInBounds(Vector2Int pos) => pos.x >= 0 && pos.x < _gridSize.x && pos.y >= 0 && pos.y < _gridSize.y;
+        public bool IsNodeInBounds(Vector2Int pos) =>
+            pos.x >= 0 && pos.x < _gridSize.x && pos.y >= 0 && pos.y < _gridSize.y;
 
         /// <summary>
         /// Fills empty nodes in given columns by moving candies down and spawning new ones.
@@ -187,7 +188,7 @@ namespace Portfolio.Match3.Core
         {
             var p = xPoses.ToList();
             p.Sort();
-            
+
             DOVirtual.DelayedCall(.2f, () =>
             {
                 foreach (var x in xPoses)
@@ -263,9 +264,9 @@ namespace Portfolio.Match3.Core
                 if (!node.IsEmpty())
                     allCandies.Add(node.Candy);
             }
-            
+
             Helper.ShuffleList(allCandies);
-            
+
             var i = 0;
             foreach (var node in _grid)
             {
@@ -275,12 +276,10 @@ namespace Portfolio.Match3.Core
                     node.SetCandy(candy, true);
                     candy.CurrentNode = node;
                     i++;
-                } 
+                }
             }
 
             DOVirtual.DelayedCall(1f, () => { _matchChecker.DefaultMatchCheckStart(); });
         }
-
-  
     }
 }

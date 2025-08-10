@@ -3,12 +3,11 @@ using UnityEngine;
 
 namespace Portfolio.Match3.Core
 {
-   
     public class GameManager : Singleton<GameManager>
     {
         [SerializeField] private TextMeshProUGUI _scoreText;
         private float _score;
-   
+
         /// <summary>
         /// Add points to score and update the UI text
         /// </summary>
@@ -18,5 +17,4 @@ namespace Portfolio.Match3.Core
             _scoreText.text = $"Score: {_score}";
         }
     }
-
 }

@@ -11,7 +11,7 @@ public class Singleton<T> : MonoBehaviour where T : MonoBehaviour
         {
             lock (_lock)
             {
-                if (_instance == null) _instance = (T) FindObjectOfType(typeof(T));
+                if (_instance == null) _instance = (T)FindObjectOfType(typeof(T));
 
                 return _instance;
             }

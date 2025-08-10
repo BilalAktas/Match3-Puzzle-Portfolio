@@ -19,5 +19,4 @@ namespace Portfolio.Match3.Helpers
             }
         }
     }
-
 }
