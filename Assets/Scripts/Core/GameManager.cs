@@ -39,7 +39,7 @@ namespace Portfolio.Match3.Core
         /// </summary>
         private void Start()
         {
-            Application.targetFrameRate = 60;
+            //Application.targetFrameRate = 60; // Build.
             
             UpdateBestScore();
             currentTime = TotalTime;
