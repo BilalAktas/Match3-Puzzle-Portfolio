@@ -39,6 +39,8 @@ namespace Portfolio.Match3.Core
         /// </summary>
         private void Start()
         {
+            Application.targetFrameRate = 60;
+            
             UpdateBestScore();
             currentTime = TotalTime;
             
@@ -64,7 +66,7 @@ namespace Portfolio.Match3.Core
         private void CountTimer()
         {
             currentTime -= Time.deltaTime;
-            _timerText.text = $"Time: {(int)currentTime}";
+            _timerText.text = ((int)currentTime).ToString();
 
             if (currentTime <= 0)
             {
@@ -94,7 +96,7 @@ namespace Portfolio.Match3.Core
         public void Score(int point)
         {
             _score += point;
-            _scoreText.text = $"Score: {_score}";
+            _scoreText.text = _score.ToString();
             _gameEndScoreText.text = $"Current Score: {_score}";
             UpdateBestScore();
         }
