@@ -1,6 +1,8 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 namespace Portfolio.Match3.Core
 {
@@ -14,6 +16,8 @@ namespace Portfolio.Match3.Core
         private HashSet<int> emptyNodePosesAfterMatch = new HashSet<int>();
         [SerializeField] private GameObject _explosionParticlePrefab;
         [SerializeField] private AudioSource _matchSound;
+
+        public static event Action<HashSet<int>> OnMatched;
 
         /// <summary>
         /// Starts checking matches from the given candy.
@@ -66,10 +70,7 @@ namespace Portfolio.Match3.Core
                 }
 
                 if (matchedNodes.Count >= 3)
-                {
-                    // İlk bulunan geçerli match'ta patlat, diğer yöne geçme
                     return CheckMatchedNodes(doAction);
-                }
             }
 
             matchedNodes.Clear();
@@ -84,7 +85,7 @@ namespace Portfolio.Match3.Core
             if (matchedNodes.Count >= 3)
             {
                 var point = matchedNodes.Count * Random.Range(5, 15);
-                if (doAction) GameManager.Instance.Score(point);
+                if (doAction) GameManager.OnScored?.Invoke(point);
                 foreach (var node in matchedNodes)
                 {
                     if (doAction)
@@ -108,12 +109,14 @@ namespace Portfolio.Match3.Core
                     emptyNodePosesAfterMatch.Add(node.GridPosition.x);
                 }
 
-                if (doAction) Grid.Instance.FillEmptyNodes(emptyNodePosesAfterMatch); // Tüm boşlukları dolduruyoruz
+                if (doAction) OnMatched?.Invoke(emptyNodePosesAfterMatch);
 
+                //emptyNodePosesAfterMatch.Clear();
                 matchedNodes.Clear();
                 return true;
             }
 
+            //emptyNodePosesAfterMatch.Clear();
             matchedNodes.Clear();
             return false;
         }

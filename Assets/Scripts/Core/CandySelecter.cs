@@ -23,7 +23,7 @@ namespace Portfolio.Match3.Core
 
         private void Update()
         {
-            if (GameManager.Instance.CurrentGameState == GameState.Idle)
+            if (GameManager.CurrentGameState == GameState.Idle)
                 return;
             
             
@@ -35,19 +35,19 @@ namespace Portfolio.Match3.Core
         /// </summary>
         private void GetPlayerInput()
         {
-            if (Input.touchCount <= 0)
-                return;
-            
-            var _touch = Input.GetTouch(0);
-            switch (_touch.phase)
-            {
-                case TouchPhase.Began: HandleTouchBegan(_touch.position); break;
-            }
-
-            // if (Input.GetMouseButtonDown(0))
+            // if (Input.touchCount <= 0)
+            //     return;
+            //
+            // var _touch = Input.GetTouch(0);
+            // switch (_touch.phase)
             // {
-            //     HandleTouchBegan(Input.mousePosition);
+            //     case TouchPhase.Began: HandleTouchBegan(_touch.position); break;
             // }
+
+            if (Input.GetMouseButtonDown(0))
+            {
+                HandleTouchBegan(Input.mousePosition);
+            }
         }
 
         /// <summary>

@@ -13,8 +13,6 @@ namespace Portfolio.Match3.Core
         public CandyProperties CandyProperties;
         public Node CurrentNode;
 
-        private BoxCollider2D _collider;
-
         private Animator _anim;
         private static readonly int _FALL = Animator.StringToHash("Fall");
         private static readonly int _FAIL = Animator.StringToHash("Fail");
@@ -22,7 +20,6 @@ namespace Portfolio.Match3.Core
         private void Start()
         {
             _anim = GetComponent<Animator>();
-            _collider = GetComponent<BoxCollider2D>();
         }
 
         /// <summary>
@@ -40,13 +37,10 @@ namespace Portfolio.Match3.Core
         /// </summary>
         public void Move(Vector2 pos, Node currentNode, bool fall)
         {
-            //_collider.enabled = false;
             transform.DOMove(pos, _MOVE_TIME).OnComplete(() =>
             {
                 if (fall)
                     _anim.SetTrigger(_FALL);
-
-                //_collider.enabled = true;
             });
             CurrentNode = currentNode;
         }
@@ -67,7 +61,6 @@ namespace Portfolio.Match3.Core
         public void Matched()
         {
             CurrentNode.SetCandy(null, false);
-            //gameObject.SetActive(false);
             ObjectPool.Instance.Deposit(gameObject, "Candy");
         }
     }

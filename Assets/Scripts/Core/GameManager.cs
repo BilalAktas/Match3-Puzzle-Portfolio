@@ -1,3 +1,4 @@
+using System;
 using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -17,9 +18,10 @@ namespace Portfolio.Match3.Core
     /// <summary>
     /// Manages overall game state, score, timer, and end screen logic.
     /// </summary>
-    public class GameManager : Singleton<GameManager>
+    public class GameManager : MonoBehaviour
     {
-        public GameState CurrentGameState;
+        public static GameState CurrentGameState { get; private set; }
+        public static Action<int> OnScored;
         
         [SerializeField] private TextMeshProUGUI _scoreText;
         [SerializeField] private TextMeshProUGUI _bestScoreText;
@@ -47,12 +49,19 @@ namespace Portfolio.Match3.Core
             CurrentGameState = GameState.Play;
             
             _gameEndReTryButton.onClick.AddListener(ReTry);
+
+            OnScored += Score;
         }
-        
+
+        private void OnDestroy()
+        {
+            OnScored -= Score;
+        }
+
         /// <summary>
         /// Reloads the current scene to restart the game.
         /// </summary>
-        private void ReTry() => SceneManager.LoadSceneAsync(0);
+        private void ReTry() => SceneManager.LoadSceneAsync(1);
 
         private void Update()
         {
@@ -93,7 +102,7 @@ namespace Portfolio.Match3.Core
         /// <summary>
         /// Add points to score and update the UI text
         /// </summary>
-        public void Score(int point)
+        private void Score(int point)
         {
             _score += point;
             _scoreText.text = _score.ToString();

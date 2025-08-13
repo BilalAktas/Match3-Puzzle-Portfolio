@@ -52,7 +52,7 @@ namespace Portfolio.Match3.Core
         /// Check if there are any valid moves left on the grid.
         /// Returns true if at least one valid move exists.
         /// </summary>
-        public bool HasValidMoves()
+        private bool HasValidMoves()
         {
             var grid = Grid.Instance.GetGrid;
             var width = grid.GetLength(0);

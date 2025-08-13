@@ -10,9 +10,9 @@ namespace Portfolio.Match3.Helpers
         /// </summary>
         public static void ShuffleList<T>(List<T> list)
         {
-            for (var i = 0; i < list.Count; i++)
+            for (var i = list.Count - 1; i > 0; i--)
             {
-                var randIndex = Random.Range(i, list.Count);
+                var randIndex = Random.Range(0, i + 1);
                 T temp = list[i];
                 list[i] = list[randIndex];
                 list[randIndex] = temp;

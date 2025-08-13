@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using DG.Tweening;
@@ -38,6 +39,13 @@ namespace Portfolio.Match3.Core
         {
             _matchChecker = GetComponent<MatchChecker>();
             CreateGrid();
+
+            MatchManager.OnMatched += FillEmptyNodes;
+        }
+
+        private void OnDestroy()
+        {
+            MatchManager.OnMatched -= FillEmptyNodes;
         }
 
         /// <summary>
@@ -73,6 +81,8 @@ namespace Portfolio.Match3.Core
                     candyClone.GetComponent<Candy>().Init(SelectCandyProperties(new Vector2Int(x, y)), nodeCurrent);
                 }
             }
+            
+            DOVirtual.DelayedCall(1f, () => { _matchChecker.DefaultMatchCheckStart(); });
         }
 
         /// <summary>
@@ -180,13 +190,13 @@ namespace Portfolio.Match3.Core
         /// <summary>
         /// Checks if a position is inside the grid boundaries.
         /// </summary>
-        public bool IsNodeInBounds(Vector2Int pos) =>
+        private bool IsNodeInBounds(Vector2Int pos) =>
             pos.x >= 0 && pos.x < _gridSize.x && pos.y >= 0 && pos.y < _gridSize.y;
 
         /// <summary>
         /// Fills empty nodes in given columns by moving candies down and spawning new ones.
         /// </summary>
-        public void FillEmptyNodes(HashSet<int> xPoses)
+        private void FillEmptyNodes(HashSet<int> xPoses)
         {
             var p = xPoses.ToList();
             p.Sort();
@@ -247,7 +257,6 @@ namespace Portfolio.Match3.Core
         {
             var _candyClone = ObjectPool.Instance.GetFromPool("Candy").GetComponent<Candy>();
             _candyClone.gameObject.SetActive(true);
-            //_candyClone.transform.name = "INSTANTIATE";
             _candyClone.transform.position = new Vector3(_node.WorldPosition.x, 8);
             _candyClone.Init(SelectCandyProperties(new Vector2Int(_node.GridPosition.x, _node.GridPosition.y)), _node);
             _node.SetCandy(_candyClone, true);
