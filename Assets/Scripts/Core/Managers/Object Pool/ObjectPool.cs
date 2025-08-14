@@ -15,19 +15,19 @@ namespace Portfolio.Match3.Core
         public int ExpandAmount;
         public Queue<GameObject> ObjectPooled = new();
     }
-    
+
     /// <summary>
     /// A generic object pooling system for reusing GameObjects efficiently.
     /// </summary>
     public class ObjectPool : Singleton<ObjectPool>
     {
         [SerializeField] private PooledObject[] _pooledObjects;
-        
+
         private void Awake()
         {
             Init();
         }
-        
+
         /// <summary>
         /// Instantiates and queues the initial objects for each pool.
         /// </summary>
@@ -43,7 +43,7 @@ namespace Portfolio.Match3.Core
                 }
             }
         }
-        
+
         /// <summary>
         /// Retrieves an object from the specified pool by name. 
         /// If no objects are available, the pool will expand.
@@ -53,27 +53,27 @@ namespace Portfolio.Match3.Core
         public GameObject GetFromPool(string name)
         {
             foreach (var pooledObject in _pooledObjects)
-            {   
-                if(pooledObject.Name != name)
+            {
+                if (pooledObject.Name != name)
                     continue;
 
                 if (pooledObject.ObjectPooled.Count > 0)
                     return pooledObject.ObjectPooled.Dequeue();
-                
-      
+
+
                 for (var i = 0; i < pooledObject.ExpandAmount; i++)
                 {
                     var clone = Instantiate(pooledObject.Prefab, transform);
                     clone.SetActive(false);
                     pooledObject.ObjectPooled.Enqueue(clone);
                 }
-                
-                return  pooledObject.ObjectPooled.Dequeue();
+
+                return pooledObject.ObjectPooled.Dequeue();
             }
 
             return null;
         }
-        
+
         /// <summary>
         /// Returns a GameObject to its respective pool for future reuse.
         /// </summary>
@@ -83,13 +83,13 @@ namespace Portfolio.Match3.Core
         {
             foreach (var pooledObject in _pooledObjects)
             {
-                if(pooledObject.Name != poolName)
+                if (pooledObject.Name != poolName)
                     continue;
-                
+
                 _object.SetActive(false);
                 _object.transform.SetParent(transform);
                 pooledObject.ObjectPooled.Enqueue(_object);
             }
         }
-    }   
+    }
 }

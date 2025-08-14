@@ -12,9 +12,9 @@ GameObject:
   - component: {fileID: 1571051199062463790}
   - component: {fileID: 7673633902885233388}
   - component: {fileID: 5227804592353934493}
-  - component: {fileID: 8354549173602169550}
+  - component: {fileID: -5776754535949900273}
   m_Layer: 0
-  m_Name: Candy
+  m_Name: Bomb
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -157,7 +157,7 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
---- !u!114 &8354549173602169550
+--- !u!114 &-5776754535949900273
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -166,7 +166,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 654635861912904766}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: cc8303085d6cc114fae1ea5ecd07f697, type: 3}
+  m_Script: {fileID: 11500000, guid: 585d56abd0817d1448b3af5ec6b2d88e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   CandyProperties:

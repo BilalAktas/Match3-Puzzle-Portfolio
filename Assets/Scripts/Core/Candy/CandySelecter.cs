@@ -10,7 +10,7 @@ namespace Portfolio.Match3.Core
     public class CandySelecter : MonoBehaviour
     {
         private Camera _cam;
-        private List<Candy> _selectedSelectables = new();
+        private List<Candy> _selectedCandies = new();
         [SerializeField] private AudioSource _moveSound;
         [SerializeField] private AudioSource _moveFailSound;
         private MatchManager _matchManager;
@@ -25,8 +25,8 @@ namespace Portfolio.Match3.Core
         {
             if (GameManager.CurrentGameState == GameState.Idle)
                 return;
-            
-            
+
+
             GetPlayerInput();
         }
 
@@ -57,10 +57,10 @@ namespace Portfolio.Match3.Core
         {
             var _pos = _cam.ScreenToWorldPoint(pos);
             var _collider = Physics2D.OverlapPoint(_pos);
-            if (_collider && _collider.TryGetComponent(out Candy selectable) &&
-                !_selectedSelectables.Contains(selectable))
+            if (_collider && _collider.TryGetComponent(out Candy candy) &&
+                !_selectedCandies.Contains(candy))
             {
-                _selectedSelectables.Add(selectable);
+                _selectedCandies.Add(candy);
                 StartCoroutine(CheckCandySwitch());
             }
         }
@@ -70,24 +70,38 @@ namespace Portfolio.Match3.Core
         /// </summary>
         private IEnumerator CheckCandySwitch()
         {
-            if (_selectedSelectables.Count < 2)
+            if (_selectedCandies.Count < 2)
                 yield break;
 
-            var nodeA = _selectedSelectables[0].CurrentNode;
-            var nodeB = _selectedSelectables[1].CurrentNode;
-
+            var nodeA = _selectedCandies[0].CurrentNode;
+            var nodeB = _selectedCandies[1].CurrentNode;
             var candyA = nodeA.Candy;
             var candyB = nodeB.Candy;
-
-            _selectedSelectables.Clear();
+            _selectedCandies.Clear();
 
             if (!Grid.AreNodesNeighbor(nodeA, nodeB))
                 yield break;
 
-            nodeA.SetCandy(candyB, false);
-            nodeB.SetCandy(candyA, false);
+            var aType = candyA.CandyData.CandyType;
+            var bType = candyB.CandyData.CandyType;
+
+
+            if (aType == "Bomb" ^ bType == "Bomb")
+                yield break;
+
+            if (aType != "Bomb" && bType != "Bomb")
+            {
+                nodeA.SetCandy(candyB, false);
+                nodeB.SetCandy(candyA, false);
+            }
 
             yield return new WaitForSeconds(0.3f);
+
+            if (aType == "Bomb" && bType == "Bomb")
+            {
+                MatchManager.OnForceMatched?.Invoke(new HashSet<Node> { nodeA, nodeB });
+                yield break;
+            }
 
             var matchA = _matchManager.StartCheck(candyA, true);
             var matchB = _matchManager.StartCheck(candyB, true);
@@ -96,10 +110,8 @@ namespace Portfolio.Match3.Core
             {
                 nodeA.SetCandy(candyA, false);
                 nodeB.SetCandy(candyB, false);
-
                 candyA.FailMatchAnim();
                 candyB.FailMatchAnim();
-
                 _moveFailSound.Play();
             }
             else

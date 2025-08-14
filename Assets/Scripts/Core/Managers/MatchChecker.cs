@@ -34,18 +34,30 @@ namespace Portfolio.Match3.Core
         private IEnumerator DefaultMatchCheck()
         {
             var grid = Grid.Instance.GetGrid;
+
+            var matchFound = false;
+
             foreach (var node in grid)
             {
                 if (_matchManager.StartCheck(node.Candy, true))
                 {
-                    yield return new WaitForSeconds(1f);
-
-                    DefaultMatchCheckStart();
+                    matchFound = true;
+                    break;
                 }
             }
 
-            if (!HasValidMoves())
-                Grid.Instance.ShuffleGrid();
+            if (matchFound)
+            {
+                yield return new WaitForSeconds(1f);
+                DefaultMatchCheckStart();
+            }
+            else
+            {
+                if (!HasValidMoves())
+                {
+                    Grid.Instance.ShuffleGrid();
+                }
+            }
         }
 
         /// <summary>
@@ -84,20 +96,29 @@ namespace Portfolio.Match3.Core
                         if (neighborCandy == null)
                             continue;
 
-                        currentNode.Candy = neighborCandy;
+
+                        var a = (currentCandy.CandyData.CandyType == "Bomb" &&
+                                 neighborCandy.CandyData.CandyType == "Bomb")
+                                || (currentCandy.CandyData.CandyType != "Bomb" &&
+                                    neighborCandy.CandyData.CandyType != "Bomb");
+
+                        if (!a)
+                            continue;
+
+                        currentNode.SetCandyForce(neighborCandy);
                         neighborCandy.CurrentNode = currentNode;
 
-                        neighborNode.Candy = currentCandy;
+                        neighborNode.SetCandyForce(currentCandy);
                         currentCandy.CurrentNode = neighborNode;
 
                         var matchFound = _matchManager.StartCheck(currentCandy, false) ||
                                          _matchManager.StartCheck(neighborCandy, false);
 
                         // Undo swap
-                        currentNode.Candy = currentCandy;
+                        currentNode.SetCandyForce(currentCandy);
                         currentCandy.CurrentNode = currentNode;
 
-                        neighborNode.Candy = neighborCandy;
+                        neighborNode.SetCandyForce(neighborCandy);
                         neighborCandy.CurrentNode = neighborNode;
 
                         if (matchFound)

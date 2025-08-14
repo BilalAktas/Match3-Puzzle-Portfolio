@@ -7,7 +7,10 @@ namespace Portfolio.Match3.Core
     /// </summary>
     public class Node
     {
-        public Candy Candy;
+        public Candy Candy { get; private set; }
+
+        public void SetCandyForce(Candy candy) => Candy = candy;
+
         public Vector2 WorldPosition;
         public Vector2Int GridPosition;
 

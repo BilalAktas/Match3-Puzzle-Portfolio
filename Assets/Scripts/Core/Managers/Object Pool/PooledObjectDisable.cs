@@ -9,7 +9,7 @@ namespace Portfolio.Match3.Core
     {
         [SerializeField] private float _disableTime;
         [SerializeField] private string _pooledName;
-        
+
         /// <summary>
         /// Called when the object is enabled. Starts a timer to return the object to the pool.
         /// </summary>
@@ -17,11 +17,10 @@ namespace Portfolio.Match3.Core
         {
             Invoke(nameof(Deposit), _disableTime);
         }
-        
+
         /// <summary>
         /// Returns the object to the object pool.
         /// </summary>
         private void Deposit() => ObjectPool.Instance.Deposit(gameObject, _pooledName);
-    }    
+    }
 }
-
