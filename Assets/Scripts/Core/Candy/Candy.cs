@@ -18,10 +18,12 @@ namespace Portfolio.Match3.Core
         private static readonly int _FAIL = Animator.StringToHash("Fail");
 
         protected bool _matched;
+        private SpriteRenderer _renderer;
         
-        private void Start()
+        private void Awake()
         {
             _anim = GetComponent<Animator>();
+            _renderer = GetComponent<SpriteRenderer>();
         }
 
         /// <summary>
@@ -30,7 +32,7 @@ namespace Portfolio.Match3.Core
         public void Init(CandyData data, Node node)
         {
             CandyData = data;
-            GetComponent<SpriteRenderer>().sprite = Resources.Load<Sprite>($"Tiles/{data.CandyResourceImage}");
+           _renderer.sprite = Resources.Load<Sprite>($"Tiles/{data.CandyResourceImage}");
             CurrentNode = node;
 
             _matched = false;
